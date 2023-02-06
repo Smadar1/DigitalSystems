@@ -1,21 +1,21 @@
-module muxN_tb_Solution;
+module muxN_tb;
 
 //Internal signals for testing
-logic y;
-logic [7:0] x;
-logic [2:0] ss; //2 bit signal
+logic y2;
+logic [7:0] x; //8 bit input
+logic [2:0] ss; //4 bit signal
 
 //Instantiate the component under test
-muxN #(.N(8)) u1(y, x, ss);
+muxN #(.N(8)) u1(y2, x, ss);
 
 
 initial
 begin
 	//Unpacked array of expected (correct) outputs. Automatic means this has local scope
-	automatic logic expected[8] = {0,0,1,1,0,1,0,1};
+	automatic logic expected[8] = {1'b1, 1'b0, 1'b1, 1'b0, 1'b1, 1'b0, 1'b1, 1'b0};
 
 	//Set inputs (note the direction)
-	x = 8'b10101100;
+	x = 8'b01010101;
 
 	//Iterate over all input sequences
 	for (int n=0; n<8; n = n + 1) begin
@@ -26,11 +26,11 @@ begin
 		#10ps;
 
 	        //Check output is the expected value
-    	        assert (y == expected[n])
+    	        assert (y2 == expected[n])
                   //Note how $display and $error can be used much like printf in C
-                  $display("Passed test %d, output=%d, expected=%d", n, y, expected[n]);
+                  $display("Passed test %d, output=%d, expected=%d", n, y2, expected[n]);
                 else
-                   $error("Error for test %d: expected %d and got %d", n, expected[n], y);		
+                   $error("Error for test %d: expected %d and got %d", n, expected[n], y2);		
 	end
 end
 
